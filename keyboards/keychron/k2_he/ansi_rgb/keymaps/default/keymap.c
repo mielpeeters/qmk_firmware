@@ -66,9 +66,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [SYMBOLS] = LAYOUT_ansi_84(
         KC_ESC,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_PSCR,  KC_DEL,   RGB_MOD,
         KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
-        KC_TAB,   KC_HASH,  KC_W,     KC_EXLM,  KC_R,     KC_T,     KC_Y,     KC_AMPR,  KC_LPRN,  KC_RPRN,  KC_P,     KC_LCBR,  KC_RCBR,  KC_BSLS,            KC_PGDN,
+        KC_TAB,   KC_HASH,  KC_HASH,     KC_EXLM,  KC_R,     KC_T,     KC_Y,     KC_AMPR,  KC_LPRN,  KC_RPRN,  KC_P,     KC_LCBR,  KC_RCBR,  KC_BSLS,            KC_PGDN,
         _______,  KC_A,     KC_MINS,  KC_PLUS,  KC_LCBR,  KC_EQL,   KC_UNDS,  KC_BSPC,  KC_LBRC,  KC_RBRC,  KC_COLN,  KC_DQUO,            KC_ENT,             KC_HOME,
-        KC_LSFT,            KC_Z,     KC_X,     KC_C,     KC_RCBR,  KC_B,     KC_ASTR,  KC_M,     KC_LABK,  KC_RABK,  KC_SLSH,            KC_RSFT,  KC_UP,    KC_END,
+        KC_LSFT,            KC_Z,     KC_X,     KC_C,     KC_RCBR,  KC_B,     KC_ASTR,  KC_M,     KC_LABK,  KC_RABK,  KC_QUES,            KC_RSFT,  KC_UP,    KC_END,
         KC_LCTL,  KC_LGUI,  KC_LALT,                                KC_SPC,                                 KC_RALT,  FN_WIN,   KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
 };
 
