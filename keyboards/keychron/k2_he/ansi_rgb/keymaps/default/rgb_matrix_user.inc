@@ -5,6 +5,16 @@ RGB_MATRIX_EFFECT(DEPTH_REACTIVE)
 
 #include "analog_matrix.h"
 
+// Helper to get brightness from travel value
+static uint8_t travel_to_brightness(uint8_t travel) {
+    if (travel <= 5) return 0;
+    uint16_t linear = ((uint16_t)(travel - 5) * 255) / 180;
+    return linear > 255 ? 255 : (uint8_t)linear;
+}
+
+// Neighbor glow intensity (0-255, where 64 = 25% of pressed key brightness)
+#define NEIGHBOR_GLOW_FACTOR 127
+
 bool DEPTH_REACTIVE(effect_params_t* params) {
     RGB_MATRIX_USE_LIMITS(led_min, led_max);
 
@@ -21,28 +31,42 @@ bool DEPTH_REACTIVE(effect_params_t* params) {
             if (led_index == NO_LED) continue;
             if (led_index < led_min || led_index >= led_max) continue;
 
+            // Get this key's own brightness
             uint8_t travel = analog_matrix_get_travel(row, col);
+            uint16_t brightness = travel_to_brightness(travel);
 
-            // Threshold to avoid noise from resting keys
-            if (travel > 5) {
-                // Scale travel (15-180) to brightness (0-255)
-                uint16_t linear = ((uint16_t)(travel - 5) * 255) / 180;
-                uint8_t brightness = 0;
+            // Check neighboring keys and add their glow contribution
+            for (int8_t dr = -1; dr <= 1; dr++) {
+                for (int8_t dc = -1; dc <= 1; dc++) {
+                    if (dr == 0 && dc == 0) continue;  // Skip self
 
-                if (linear > 255) {
-                    brightness = 255;
-                } else {
-                    brightness = (uint8_t)linear;
+                    int8_t nr = row + dr;
+                    int8_t nc = col + dc;
+
+                    // Bounds check
+                    if (nr < 0 || nr >= MATRIX_ROWS) continue;
+                    if (nc < 0 || nc >= MATRIX_COLS) continue;
+
+                    uint8_t neighbor_travel = analog_matrix_get_travel(nr, nc);
+                    uint8_t neighbor_brightness = travel_to_brightness(neighbor_travel);
+
+                    // Add scaled neighbor contribution
+                    brightness += scale8(neighbor_brightness, NEIGHBOR_GLOW_FACTOR);
                 }
+            }
 
-                // Use configured HSV color with depth-based brightness
+            // Clamp to 255
+            if (brightness > 255) brightness = 255;
+
+            if (brightness > 0) {
+                // Use configured HSV color with computed brightness
                 HSV hsv = rgb_matrix_config.hsv;
-                hsv.v = scale8(brightness, hsv.v);  // Scale to max configured brightness
+                hsv.v = scale8((uint8_t)brightness, hsv.v);
                 RGB rgb = rgb_matrix_hsv_to_rgb(hsv);
 
                 rgb_matrix_set_color(led_index, rgb.r, rgb.g, rgb.b);
             } else {
-                // Key not pressed - turn off LED
+                // No brightness - turn off LED
                 rgb_matrix_set_color(led_index, 0, 0, 0);
             }
         }
