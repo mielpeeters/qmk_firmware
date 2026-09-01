@@ -26,7 +26,7 @@
 #define FULL_TRAVEL_UNIT 40
 
 #ifndef DEFAULT_ACTUATION_POINT
-#    define DEFAULT_ACTUATION_POINT 15
+#    define DEFAULT_ACTUATION_POINT 7
 #endif
 
 #ifndef DEFAULT_RAPID_TRIGGER_SENSITIVITY
@@ -116,11 +116,11 @@ void update_key_config(uint8_t row, uint8_t col);
 void analog_matrix_set_mins(uint16_t *min);
 void analog_matrix_set_maxs(uint16_t *max);
 
-uint8_t  analog_matrix_get_travel(uint8_t row, uint8_t col);
-uint8_t analog_matrix_get_key_mode(uint8_t row, uint8_t col);
-bool    analog_matrix_get_key_state(uint8_t row, uint8_t col);
-bool    analog_matrix_calibrating(void);
+uint8_t      analog_matrix_get_travel(uint8_t row, uint8_t col);
+uint8_t      analog_matrix_get_key_mode(uint8_t row, uint8_t col);
+bool         analog_matrix_get_key_state(uint8_t row, uint8_t col);
+bool         analog_matrix_calibrating(void);
 matrix_row_t analog_matrix_get_row(uint8_t row);
-void    analog_matrix_rx(uint8_t *data, uint8_t length);
-void    analog_matrix_task(void);
-void    analog_matrix_indicator(void);
+void         analog_matrix_rx(uint8_t *data, uint8_t length);
+void         analog_matrix_task(void);
+void         analog_matrix_indicator(void);
